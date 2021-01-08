@@ -1,0 +1,46 @@
+:root {
+    --color-accent: #FF8000;
+    --color-accent-selected: #FF8000;
+
+    --color-background: #000;
+    --color-background-even:var(--color-background);
+    --color-background-odd:#222;
+    --color-background-selected: #462300;
+}
+
+body {
+    background: var(--color-background);
+    font-family:verdana;
+    color:var(--color-accent);
+    margin:0px;
+}
+
+div.thread {
+    padding: 10pt;
+}
+div.thread-even {
+    background: var(--color-background-even);
+}
+div.thread-odd {
+    background: var(--color-background-odd);
+}
+div.thread:hover, div.thread:active {
+    transition: .25s ease;
+    background: var(--color-background-selected);
+    color:var(--color-accent-selected);
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.screen-header {
+}
+.screen-content {
+  flex-grow: 1;
+  overflow: auto;
+  height:0px;
+}
+.screen-footer {
+}
