@@ -5,6 +5,8 @@ import com.scurab.dipho.home.HomeUiState
 import com.scurab.dipho.home.HomeViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.css.padding
+import kotlinx.css.pt
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import react.RBuilder
@@ -13,6 +15,8 @@ import react.RProps
 import react.RState
 import react.dom.div
 import react.setState
+import styled.css
+import styled.styledDiv
 
 class RHomeState(override var items: List<Thread>) : HomeUiState(items), RState
 
@@ -30,9 +34,7 @@ class HomeComponent(props: RProps) : RComponent<RProps, RHomeState>(props), Koin
                 items = it.items
             }
         }
-        GlobalScope.launch {
-            viewModel.loadItems()
-        }
+        viewModel.loadItemsAsync()
     }
 
     override fun RBuilder.render() {
@@ -41,7 +43,12 @@ class HomeComponent(props: RProps) : RComponent<RProps, RHomeState>(props), Koin
         }
         div {
             state.items.forEach {
-                div { +it.subject }
+                styledDiv {
+                    css {
+                        padding(10.pt)
+                    }
+                    +it.subject
+                }
             }
         }
     }
