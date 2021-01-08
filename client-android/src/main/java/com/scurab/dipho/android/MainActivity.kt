@@ -1,12 +1,11 @@
 package com.scurab.dipho.android
 
-import PlatformGreetings
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import com.scurab.dipho.android.databinding.ActivityMainBinding
-import com.scurab.dipho.common.model.Author
-import com.scurab.dipho.common.model.Thread
+import com.scurab.dipho.android.home.HomeFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +18,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(views.root)
 
-        val auth = Author("1", "test")
-        views.textView.text = PlatformGreetings().greetings() + "\n" + auth.name
+        supportFragmentManager.commit {
+            replace(R.id.fragmentContainer, HomeFragment())
+        }
     }
 }

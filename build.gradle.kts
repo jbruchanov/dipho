@@ -16,7 +16,9 @@ version = "1.0-SNAPSHOT"
 
 allprojects {
     repositories {
+        mavenLocal()
         jcenter()
+        google()
         mavenCentral()
         maven { url = uri("https://dl.bintray.com/kotlin/kotlin-js-wrappers") }
         maven { url = uri("https://dl.bintray.com/ekito/koin") }
