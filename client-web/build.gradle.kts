@@ -15,12 +15,12 @@ repositories {
 dependencies {
     implementation(project(":core"))
 
-    val kotlinJs = "1.4.21"
-    val reactJs = "17.0.0-pre.134-kotlin-$kotlinJs"
-    implementation("org.jetbrains:kotlin-react:$reactJs")
-    implementation("org.jetbrains:kotlin-react-dom:$reactJs")
-    implementation("org.jetbrains:kotlin-react-router-dom:5.2.0-pre.134-kotlin-$kotlinJs")
-    implementation("org.jetbrains", "kotlin-styled", "5.2.0-pre.134-kotlin-$kotlinJs")
+    //implementation("org.koin:koin-core:${Versions.koin}")
+
+    implementation("org.jetbrains:kotlin-react:${Versions.reactJs}")
+    implementation("org.jetbrains:kotlin-react-dom:${Versions.reactJs}")
+    implementation("org.jetbrains:kotlin-react-router-dom:5.2.0-pre.134-kotlin-${Versions.kotlin}")
+    implementation("org.jetbrains", "kotlin-styled", "5.2.0-pre.134-kotlin-${Versions.kotlin}")
 
     testImplementation(kotlin("test-js"))
 }
