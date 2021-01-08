@@ -29,6 +29,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api("org.koin:koin-core:${Versions.koin}")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}")
             }
         }
         val commonTest by getting {
@@ -47,7 +48,9 @@ kotlin {
             }
         }
         val jsMain by getting {
-
+            dependencies {
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${Versions.kotlinCoroutines}")
+            }
         }
         val jsTest by getting {
             dependencies {

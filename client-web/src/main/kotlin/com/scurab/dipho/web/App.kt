@@ -1,7 +1,7 @@
 package com.scurab.dipho.web
 
 import com.scurab.dipho.common.nav.Links
-import com.scurab.dipho.web.main.MainPage
+import com.scurab.dipho.web.main.HomeComponent
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import react.RBuilder
@@ -20,7 +20,7 @@ class App : RComponent<RProps, RState>(), KoinComponent {
     override fun RBuilder.render() {
         hashRouter { // or "browserRouter"
             switch {
-                route(links.root(), MainPage::class, exact = true)
+                route(links.root(), HomeComponent::class, exact = true)
                 redirect(from = "*", to = links.root())
             }
         }
