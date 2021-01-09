@@ -1,6 +1,7 @@
-package com.scurab.dipho.common.core
+package com.scurab.dipho.common.android.core
 
 import android.util.Log
+import com.scurab.dipho.common.core.ILogger
 
 class AndroidLogger : ILogger {
     override fun d(tag: String, msg: String) {

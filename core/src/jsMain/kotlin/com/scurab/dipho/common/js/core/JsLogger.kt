@@ -1,4 +1,6 @@
-package com.scurab.dipho.common.core
+package com.scurab.dipho.common.js.core
+
+import com.scurab.dipho.common.core.ILogger
 
 class JsLogger : ILogger {
     override fun d(tag: String, msg: String) {

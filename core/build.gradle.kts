@@ -52,6 +52,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${Versions.kotlinCoroutines}")
+                implementation("org.jetbrains:kotlin-react:${Versions.reactJs}")
             }
         }
         val jsTest by getting {

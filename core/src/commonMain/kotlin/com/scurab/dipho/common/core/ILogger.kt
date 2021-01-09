@@ -7,10 +7,10 @@ interface ILogger {
     fun e(tag: String, msg: String)
 }
 
-interface HasLogger {
+interface IHasLogger {
     val logger: ILogger
 
-    class Delegate : HasLogger {
+    class Delegate : IHasLogger {
         override val logger: ILogger by KoinContextHandler.get().inject()
     }
 }
