@@ -1,4 +1,5 @@
-import com.scurab.dipho.common.di.JsModule
+import com.scurab.dipho.common.di.CommonModule
+import com.scurab.dipho.common.js.di.JsModule
 import com.scurab.dipho.web.App
 import kotlinx.browser.document
 import kotlinx.browser.window
@@ -19,6 +20,7 @@ fun main() {
 
 fun initDi() {
     startKoin {
+        modules(CommonModule.koinModule)
         modules(JsModule.koinModule)
     }
 }
