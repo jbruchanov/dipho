@@ -29,11 +29,11 @@ kotlin {
     js(LEGACY) {
         browser {
             binaries.executable()
+            //webpack config in webpack.config.d/devServer.js
             webpackTask {
                 cssSupport.enabled = true
             }
             runTask {
-                //devServer = devServer?.copy(port = 3030)
                 cssSupport.enabled = true
             }
             testTask {
