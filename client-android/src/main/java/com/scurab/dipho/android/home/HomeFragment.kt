@@ -2,16 +2,14 @@ package com.scurab.dipho.android.home
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.scurab.dipho.android.R
 import com.scurab.dipho.android.databinding.FragmentHomeBinding
+import com.scurab.dipho.common.android.app.BaseFragment
 import com.scurab.dipho.home.HomeViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     //TODO: lazy
     private var views: FragmentHomeBinding? = null

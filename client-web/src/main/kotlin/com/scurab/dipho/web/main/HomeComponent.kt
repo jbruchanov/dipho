@@ -1,16 +1,13 @@
 package com.scurab.dipho.web.main
 
+import com.scurab.dipho.common.js.arch.BaseRComponent
+import com.scurab.dipho.common.js.arch.viewModel
 import com.scurab.dipho.common.model.Thread
 import com.scurab.dipho.home.HomeUiState
 import com.scurab.dipho.home.HomeViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.css.padding
 import kotlinx.css.pt
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import react.RBuilder
-import react.RComponent
 import react.RProps
 import react.RState
 import react.dom.div
@@ -20,16 +17,18 @@ import styled.styledDiv
 
 class RHomeState(override var items: List<Thread>) : HomeUiState(items), RState
 
-class HomeComponent(props: RProps) : RComponent<RProps, RHomeState>(props), KoinComponent {
+class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
 
-    private val viewModel by inject<HomeViewModel>()
+    private val viewModel by viewModel<HomeViewModel>()
 
     init {
         state = RHomeState(emptyList())
     }
 
     override fun componentDidMount() {
+        super.componentDidMount()
         viewModel.uiState.observe {
+            logger.d("HomeComponent", "Update UI")
             setState {
                 items = it.items
             }
