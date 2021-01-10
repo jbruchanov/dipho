@@ -12,5 +12,9 @@ data class Thread(
 )
 
 data class Message(
-    val message: String
+    val author: Author,
+    val text: String,
+    val created: Long,
+    val links: List<String>,
+    val images: List<String>
 )

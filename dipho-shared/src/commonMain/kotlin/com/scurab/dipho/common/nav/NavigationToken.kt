@@ -1,8 +1,6 @@
 package com.scurab.dipho.common.nav
 
-import com.scurab.dipho.nav.INavigationToken
-
-sealed class NavigationToken : INavigationToken {
+sealed class NavigationToken {
     object Back : NavigationToken()
     object Root : NavigationToken()
     class Thread(val threadId: String) : NavigationToken()

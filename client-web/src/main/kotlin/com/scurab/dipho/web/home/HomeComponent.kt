@@ -2,32 +2,27 @@ package com.scurab.dipho.web.home
 
 import com.scurab.dipho.common.js.arch.BaseRComponent
 import com.scurab.dipho.common.js.arch.viewModel
+import com.scurab.dipho.common.js.nav.bind
 import com.scurab.dipho.common.model.Thread
 import com.scurab.dipho.home.HomeUiState
 import com.scurab.dipho.home.HomeViewModel
-import kotlinx.css.h4
-import kotlinx.css.padding
-import kotlinx.css.pt
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
 import react.RState
-import react.ReactElement
-import react.dom.button
+import react.child
 import react.dom.div
-import react.dom.h1
 import react.dom.h4
+import react.functionalComponent
 import react.setState
-import styled.css
-import styled.styledDiv
-import kotlin.js.Date
 
 class RHomeState(override var items: List<Thread>) : HomeUiState(items), RState
 
 class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
 
     private val viewModel by viewModel<HomeViewModel>()
+    private val threadClickHandler = { thread: Thread -> viewModel.onThreadClicked(thread) }
 
     init {
         state = RHomeState(emptyList())
@@ -35,51 +30,53 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
 
     override fun componentDidMount() {
         super.componentDidMount()
-        viewModel.uiState.observe {
-            logger.d("HomeComponent", "Update UI")
-            setState {
-                items = it.items
+        with(viewModel) {
+            viewModel.navigationToken.bind(this@HomeComponent)
+            uiState.observe {
+                logger.d("HomeComponent", "Update UI")
+                setState {
+                    items = it.items
+                }
             }
+            loadItemsAsync()
         }
-        viewModel.loadItemsAsync()
     }
 
     override fun RBuilder.render() {
         div {
-            +"MainPage"
-        }
-        div {
-            state.items.forEach {
-                styledDiv {
-                    css {
-                        padding(10.pt)
-                    }
-                    +it.subject
+            attrs.classes = setOf("screen")
+            child(header)
+            div {
+                attrs.classes = setOf("screen-content")
+                state.items.forEachIndexed { index, thread ->
+                    thread(index, thread, threadClickHandler)
                 }
             }
+            child(footer)
         }
     }
 
-    fun RBuilder.header(state: RHomeState) {
+    private val header = functionalComponent<RProps> {
         div {
-            attrs.classes = setOf("screen-header")
+            attrs.classes = setOf("home-header", "screen-header")
             h4 { +"Header" }
         }
     }
 
-    fun RBuilder.footer(buttonHandler: () -> Unit) {
+    private val footer = functionalComponent<RProps> {
         div {
-            attrs.classes = setOf("screen-footer")
+            attrs.classes = setOf("home-footer", "screen-footer")
             h4 { +"Footer" }
         }
     }
 
-    fun RBuilder.thread(item: Thread, index: Int, clickHandler: (Thread) -> Unit): ReactElement {
-        return div {
-            attrs.onClickFunction = { clickHandler(item) }
-            attrs.classes = setOf("thread", if (index % 2 == 0) "thread-even" else "thread-odd")
-            div { +item.author.name }
-            div { +item.subject }
-        }
-    }
+    fun RBuilder.thread(index: Int, item: Thread, clickHandler: (Thread) -> Unit) =
+        child(functionalComponent("Thread") {
+            div {
+                attrs.onClickFunction = { clickHandler(item) }
+                attrs.classes = setOf("thread", if (index % 2 == 0) "thread-even" else "thread-odd")
+                div { +item.author.name }
+                div { +item.subject }
+            }
+        })
 }
