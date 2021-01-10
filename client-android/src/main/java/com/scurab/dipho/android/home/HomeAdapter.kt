@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.scurab.dipho.android.databinding.ItemThreadBinding
-import com.scurab.dipho.common.model.Thread
+import com.scurab.dipho.common.model.ChatRoom
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-    var items = emptyList<Thread>()
+    var items = emptyList<ChatRoom>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -26,8 +26,8 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
 
     class ViewHolder(val views: ItemThreadBinding) : RecyclerView.ViewHolder(views.root) {
-        fun bind(thread: Thread) = with(views) {
-            subject.text = thread.subject
+        fun bind(chatRoom: ChatRoom) = with(views) {
+            subject.text = chatRoom.subject
         }
     }
 }

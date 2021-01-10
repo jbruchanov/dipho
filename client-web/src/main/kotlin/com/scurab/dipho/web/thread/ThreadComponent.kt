@@ -2,13 +2,12 @@ package com.scurab.dipho.web.thread
 
 import com.scurab.dipho.common.js.arch.BaseRComponent
 import com.scurab.dipho.common.js.arch.viewModel
-import com.scurab.dipho.common.model.Message
+import com.scurab.dipho.common.model.ChatItem
 import com.scurab.dipho.home.ThreadUiState
 import com.scurab.dipho.home.ThreadViewModel
 import kotlinx.css.padding
 import kotlinx.css.px
 import kotlinx.html.classes
-import kotlinx.html.hr
 import react.RBuilder
 import react.RProps
 import react.RState
@@ -26,7 +25,7 @@ external interface ThreadProps : RProps {
     var threadId: String
 }
 
-class RThreadState(override var items: List<Message>) : ThreadUiState(items), RState
+class RThreadState(override var items: List<ChatItem>) : ThreadUiState(items), RState
 
 class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadState>(props) {
 
@@ -60,7 +59,7 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
     }
 
 
-    private fun RBuilder.message(message: Message) = functionalComponent<RProps>("Message") {
+    private fun RBuilder.message(chatItem: ChatItem) = functionalComponent<RProps>("Message") {
         styledDiv {
             css {
                 padding(10.px)
@@ -68,29 +67,29 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
             attrs.classes = setOf("thread-content")
             div {
                 attrs.classes = setOf("thread-author")
-                +"Autor: ${message.author.name}"
+                +"Autor: ${chatItem.author.name}"
             }
             attrs.classes = setOf("thread-content")
             div {
                 attrs.classes = setOf("thread-author")
-                +message.created.toString()
+                +chatItem.created.toString()
             }
             div {
                 attrs.classes = setOf("thread-text")
-                +message.text
+                +chatItem.text
             }
-            if (message.links.isNotEmpty()) {
+            if (chatItem.links.isNotEmpty()) {
                 div {
                     attrs.classes = setOf("thread-links")
-                    message.links.forEach {
+                    chatItem.links.forEach {
                         a { attrs.href = it }
                     }
                 }
             }
-            if (message.images.isNotEmpty()) {
+            if (chatItem.images.isNotEmpty()) {
                 div {
                     attrs.classes = setOf("thread-images")
-                    message.images.forEach {
+                    chatItem.images.forEach {
                         img { attrs.src = it }
                     }
                 }

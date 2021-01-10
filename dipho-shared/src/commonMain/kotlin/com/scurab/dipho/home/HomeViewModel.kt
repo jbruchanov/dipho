@@ -5,14 +5,14 @@ import com.scurab.dipho.common.lifecycle.LifecycleObservable
 import com.scurab.dipho.common.lifecycle.mutableLifecycleObservable
 import com.scurab.dipho.common.lifecycle.navigationLifecycleObservable
 import com.scurab.dipho.common.model.Author
-import com.scurab.dipho.common.model.Thread
+import com.scurab.dipho.common.model.ChatRoom
 import com.scurab.dipho.common.nav.NavigationToken
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 
-open class HomeUiState(open val items: List<Thread>)
+open class HomeUiState(open val items: List<ChatRoom>)
 
 class HomeViewModel : BaseCommonViewModel(), KoinComponent {
 
@@ -29,7 +29,7 @@ class HomeViewModel : BaseCommonViewModel(), KoinComponent {
 
     private suspend fun loadItems() {
         val homeUiState = HomeUiState(
-            (0..30).map { Thread("Id:$it", "Subject1:$it", Author("$it", "Author:$it")) }
+            (0..30).map { ChatRoom("Id:$it", "Subject1:$it", Author("$it", "Author:$it"), 5) }
         )
         delay(1000)
         //TODO: remove main context here
@@ -38,7 +38,7 @@ class HomeViewModel : BaseCommonViewModel(), KoinComponent {
         }
     }
 
-    fun onThreadClicked(thread: Thread) {
-        _navigationToken.enqueueItem(NavigationToken.Thread(thread.id))
+    fun onThreadClicked(chatRoom: ChatRoom) {
+        _navigationToken.enqueueItem(NavigationToken.Thread(chatRoom.id))
     }
 }

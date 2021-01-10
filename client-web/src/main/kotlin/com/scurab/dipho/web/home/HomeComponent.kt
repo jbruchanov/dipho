@@ -3,7 +3,7 @@ package com.scurab.dipho.web.home
 import com.scurab.dipho.common.js.arch.BaseRComponent
 import com.scurab.dipho.common.js.arch.viewModel
 import com.scurab.dipho.common.js.nav.bind
-import com.scurab.dipho.common.model.Thread
+import com.scurab.dipho.common.model.ChatRoom
 import com.scurab.dipho.home.HomeUiState
 import com.scurab.dipho.home.HomeViewModel
 import kotlinx.html.classes
@@ -17,12 +17,12 @@ import react.dom.h4
 import react.functionalComponent
 import react.setState
 
-class RHomeState(override var items: List<Thread>) : HomeUiState(items), RState
+class RHomeState(override var items: List<ChatRoom>) : HomeUiState(items), RState
 
 class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
 
     private val viewModel by viewModel<HomeViewModel>()
-    private val threadClickHandler = { thread: Thread -> viewModel.onThreadClicked(thread) }
+    private val threadClickHandler = { chatRoom: ChatRoom -> viewModel.onThreadClicked(chatRoom) }
 
     init {
         state = RHomeState(emptyList())
@@ -70,7 +70,7 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
         }
     }
 
-    fun RBuilder.thread(index: Int, item: Thread, clickHandler: (Thread) -> Unit) =
+    fun RBuilder.thread(index: Int, item: ChatRoom, clickHandler: (ChatRoom) -> Unit) =
         child(functionalComponent("Thread") {
             div {
                 attrs.onClickFunction = { clickHandler(item) }

@@ -4,13 +4,13 @@ import com.scurab.dipho.common.arch.BaseCommonViewModel
 import com.scurab.dipho.common.lifecycle.LifecycleObservable
 import com.scurab.dipho.common.lifecycle.mutableLifecycleObservable
 import com.scurab.dipho.common.model.Author
-import com.scurab.dipho.common.model.Message
+import com.scurab.dipho.common.model.ChatItem
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 import kotlin.random.Random
 
-open class ThreadUiState(open val items: List<Message>)
+open class ThreadUiState(open val items: List<ChatItem>)
 
 class ThreadViewModel : BaseCommonViewModel(), KoinComponent {
 
@@ -26,7 +26,7 @@ class ThreadViewModel : BaseCommonViewModel(), KoinComponent {
     private suspend fun loadItems(threadId: String) {
         val threadUiState = ThreadUiState(
             (0..20).map {
-                Message(
+                ChatItem(
                     Author("0", "Name:${if (it % 2 == 0) "A" else "B"}"),
                     "Message:$it",
                     Random.nextLong(),

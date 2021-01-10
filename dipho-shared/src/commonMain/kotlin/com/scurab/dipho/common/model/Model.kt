@@ -1,17 +1,29 @@
 package com.scurab.dipho.common.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Author(
     val id: String,
     val name: String
 )
 
-data class Thread(
-    val id: String,
-    val subject: String,
-    val author: Author
+@Serializable
+data class ChatRooms(
+    val nextPageId: String,
+    val items: List<ChatRoom>
 )
 
-data class Message(
+@Serializable
+data class ChatRoom(
+    val id: String,
+    val subject: String,
+    val author: Author,
+    val messages: Int
+)
+
+@Serializable
+data class ChatItem(
     val author: Author,
     val text: String,
     val created: Long,
