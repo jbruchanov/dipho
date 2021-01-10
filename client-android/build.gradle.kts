@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation(project(":dipho-shared"))
     implementation("androidx.fragment:fragment-ktx:${Versions.androidFragment}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.androidLifecycle}")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:${Versions.androidLifecycle}")

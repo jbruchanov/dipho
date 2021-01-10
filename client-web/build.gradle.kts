@@ -13,9 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":core"))
-
-    //implementation("org.koin:koin-core:${Versions.koin}")
+    implementation(project(":dipho-shared"))
 
     implementation("org.jetbrains:kotlin-react:${Versions.reactJs}")
     implementation("org.jetbrains:kotlin-react-dom:${Versions.reactJs}")
