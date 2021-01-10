@@ -9,6 +9,8 @@ import com.scurab.dipho.common.js.nav.Links
 import com.scurab.dipho.nav.INavigator
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.js.Js
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
 import org.koin.dsl.module
 
 object JsModule {
@@ -19,8 +21,9 @@ object JsModule {
         single<INavigator> { JsNavigator(get()) }
         single {
             HttpClient(Js) {
-                //FIXME:failing
-                /*install(JsonFeature)*/
+                install(JsonFeature) {
+                    serializer = KotlinxSerializer()
+                }
             }
         }
     }
