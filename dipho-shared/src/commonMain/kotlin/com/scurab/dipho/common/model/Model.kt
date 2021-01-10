@@ -23,6 +23,12 @@ data class ChatRoom(
 )
 
 @Serializable
+data class ChatItems(
+    val subject: String,
+    val items: List<ChatItem>
+)
+
+@Serializable
 data class ChatItem(
     val author: Author,
     val text: String,

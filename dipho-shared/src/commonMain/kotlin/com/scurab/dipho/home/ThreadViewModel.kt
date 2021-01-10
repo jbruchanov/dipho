@@ -1,21 +1,23 @@
 package com.scurab.dipho.home
 
+import com.scurab.dipho.common.api.IServerApi
 import com.scurab.dipho.common.arch.BaseCommonViewModel
 import com.scurab.dipho.common.lifecycle.LifecycleObservable
 import com.scurab.dipho.common.lifecycle.mutableLifecycleObservable
-import com.scurab.dipho.common.model.Author
-import com.scurab.dipho.common.model.ChatItem
+import com.scurab.dipho.common.model.ChatItems
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
-import kotlin.random.Random
+import org.koin.core.inject
 
-open class ThreadUiState(open val items: List<ChatItem>)
+open class ThreadUiState(open val chatItems: ChatItems)
 
 class ThreadViewModel : BaseCommonViewModel(), KoinComponent {
 
-    private val _uiState = mutableLifecycleObservable(ThreadUiState(emptyList()))
+    private val _uiState = mutableLifecycleObservable<ThreadUiState>()
     val uiState: LifecycleObservable<ThreadUiState> = _uiState
+
+    private val api by inject<IServerApi>()
 
     fun loadData(threadId: String) {
         viewModelScope.launch(dispatchers.io) {
@@ -24,19 +26,9 @@ class ThreadViewModel : BaseCommonViewModel(), KoinComponent {
     }
 
     private suspend fun loadItems(threadId: String) {
-        val threadUiState = ThreadUiState(
-            (0..20).map {
-                ChatItem(
-                    Author("0", "Name:${if (it % 2 == 0) "A" else "B"}"),
-                    "Message:$it",
-                    Random.nextLong(),
-                    links.getOrNull(it % 10) ?: emptyList(),
-                    images.getOrNull(it % 8) ?: emptyList(),
-                )
-            }
-        )
+        val chatItems = api.getMessages(threadId)
         withContext(dispatchers.main) {
-            _uiState.postItem(threadUiState)
+            _uiState.postItem(ThreadUiState(chatItems))
         }
     }
 

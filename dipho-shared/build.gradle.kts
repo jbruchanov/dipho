@@ -31,7 +31,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinSerialisation}")
+                implementation("io.ktor:ktor-client-core:${Versions.ktor}")
+                implementation("io.ktor:ktor-client-serialization:${Versions.ktor}")
                 api("org.koin:koin-core:${Versions.koin}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}")
             }
@@ -43,7 +45,9 @@ kotlin {
             }
         }
         val jvmMain by getting {
-
+            dependencies {
+                implementation("io.ktor:ktor-client-okhttp:${Versions.ktor}")
+            }
         }
 
         val jvmTest by getting {
@@ -55,6 +59,7 @@ kotlin {
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${Versions.kotlinCoroutines}")
                 implementation("org.jetbrains:kotlin-react:${Versions.reactJs}")
+                implementation("io.ktor:ktor-client-js:${Versions.ktor}")
             }
         }
         val jsTest by getting {
@@ -67,6 +72,7 @@ kotlin {
             dependencies {
                 implementation("com.google.android.material:material:1.2.1")
                 implementation("androidx.lifecycle:lifecycle-viewmodel:${Versions.androidLifecycle}")
+                implementation("io.ktor:ktor-client-okhttp:${Versions.ktor}")
             }
         }
         val androidTest by getting {

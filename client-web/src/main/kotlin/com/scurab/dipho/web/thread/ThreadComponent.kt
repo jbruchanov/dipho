@@ -3,6 +3,7 @@ package com.scurab.dipho.web.thread
 import com.scurab.dipho.common.js.arch.BaseRComponent
 import com.scurab.dipho.common.js.arch.viewModel
 import com.scurab.dipho.common.model.ChatItem
+import com.scurab.dipho.common.model.ChatItems
 import com.scurab.dipho.home.ThreadUiState
 import com.scurab.dipho.home.ThreadViewModel
 import kotlinx.css.padding
@@ -25,14 +26,14 @@ external interface ThreadProps : RProps {
     var threadId: String
 }
 
-class RThreadState(override var items: List<ChatItem>) : ThreadUiState(items), RState
+class RThreadState(override var chatItems: ChatItems) : ThreadUiState(chatItems), RState
 
 class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadState>(props) {
 
     private val viewModel by viewModel<ThreadViewModel>()
 
     init {
-        state = RThreadState(emptyList())
+        state = RThreadState(ChatItems("", emptyList()))
     }
 
     override fun RBuilder.render() {
@@ -40,7 +41,7 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
             div {
                 +"Subject"
             }
-            state.items.forEach {
+            state.chatItems.items.forEach {
                 child(message(it))
             }
         }
@@ -51,7 +52,7 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
         with(viewModel) {
             uiState.observe {
                 setState {
-                    items = it.items
+                    chatItems = it.chatItems
                 }
             }
         }

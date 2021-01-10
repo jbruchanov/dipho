@@ -147,5 +147,6 @@ open class MutableLifecycleObservable<T>(strategy: ILifecycleObserverStrategy<T>
     public override fun enqueueItem(item: T) = super.enqueueItem(item)
 }
 
+fun <T> mutableLifecycleObservable() = MutableLifecycleObservable<T>(LifecycleObservable.Multicast())
 fun <T> mutableLifecycleObservable(item: T) = MutableLifecycleObservable(item, LifecycleObservable.Multicast())
 fun <T> navigationLifecycleObservable() = MutableLifecycleObservable<T>(LifecycleObservable.Unicast())
