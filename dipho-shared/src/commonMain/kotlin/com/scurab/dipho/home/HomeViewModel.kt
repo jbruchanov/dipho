@@ -33,6 +33,7 @@ class HomeViewModel : BaseCommonViewModel(), KoinComponent {
             try {
                 loadItems()
             } catch (e: Exception) {
+                e.printStackTrace()
                 _uiState.emitItem(HomeUiState(false, _uiState.item?.items ?: emptyList()))
             }
         }

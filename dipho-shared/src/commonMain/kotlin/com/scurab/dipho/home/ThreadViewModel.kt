@@ -28,6 +28,7 @@ class ThreadViewModel : BaseCommonViewModel(), KoinComponent {
             try {
                 loadItems(threadId)
             } catch (e: Exception) {
+                e.printStackTrace()
                 _uiState.emitItem(ThreadUiState(false, uiState.item?.chatItems ?: ChatItems.EMPTY))
             }
         }
