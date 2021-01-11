@@ -8,6 +8,10 @@
     --color-background-even: var(--color-background);
     --color-background-odd:#222;
     --color-background-selected: #462300;
+
+
+    --spacing-chatroom: 5pt;
+    --spacing-scrollbar-width: 3pt;
 }
 
 body {
@@ -18,15 +22,11 @@ body {
 }
 
 .thread {
-    display: flex;
-    flex-direction: column;
-    padding: 10pt;
+  display: flex;
+  flex-direction: row;
+    padding: var(--spacing-chatroom);
     border: solid 1px rgba(0,0,0,0);
     cursor: pointer;
-}
-
-.subject {
-    padding-top:2px;
 }
 
 .thread:hover, div.thread:active {
@@ -40,7 +40,7 @@ body {
 }
 
 .subject {
-    margin-top:5px;
+    margin-top: calc(var(--spacing-chatroom) / 1);
 }
 
 .item-even {
@@ -65,12 +65,6 @@ body {
 .screen-footer {
 }
 
-.thread {
-  display: flex;
-  flex-direction: row;
-}
-
-
 .author {
     order: 1;
 }
@@ -91,10 +85,11 @@ body {
 .created {
     order: 4;
     text-align: center;
+    margin:auto
 }
 
 ::-webkit-scrollbar {
-  width: 4pt;               /* width of the entire scrollbar */
+  width: var(--spacing-scrollbar-width);      /* width of the entire scrollbar */
 }
 
 ::-webkit-scrollbar-track {

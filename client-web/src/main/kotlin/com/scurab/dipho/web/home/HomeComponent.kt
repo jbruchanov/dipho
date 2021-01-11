@@ -16,6 +16,7 @@ import react.dom.br
 import react.dom.div
 import react.dom.h4
 import react.dom.p
+import react.dom.span
 import react.functionalComponent
 import react.setState
 
@@ -92,11 +93,11 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
                 }
                 div {
                     attrs.classes = Classes.msgCount
-                    p { +item.messages.toString() }
+                    span { +item.messages.toString() }
                 }
                 div {
                     attrs.classes = Classes.created
-                    p {
+                    span {
                         +"10/01/2021"
                         br {  }
                         +"20:12:35"
