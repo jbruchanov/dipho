@@ -6,6 +6,8 @@ import com.scurab.dipho.common.js.core.JsLogger
 import com.scurab.dipho.common.js.coroutines.JsDispatchers
 import com.scurab.dipho.common.js.nav.JsNavigator
 import com.scurab.dipho.common.js.nav.Links
+import com.scurab.dipho.common.js.util.JsDataFormatter
+import com.scurab.dipho.common.util.IDataFormatter
 import com.scurab.dipho.nav.INavigator
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.js.Js
@@ -19,6 +21,7 @@ object JsModule {
         single<ILogger> { JsLogger() }
         single<IDispatchers> { JsDispatchers() }
         single<INavigator> { JsNavigator(get()) }
+        single<IDataFormatter> { JsDataFormatter() }
         single {
             HttpClient(Js) {
                 install(JsonFeature) {

@@ -4,11 +4,13 @@ import com.scurab.dipho.common.js.arch.BaseRComponent
 import com.scurab.dipho.common.js.arch.viewModel
 import com.scurab.dipho.common.js.nav.bind
 import com.scurab.dipho.common.model.ChatRoom
+import com.scurab.dipho.common.util.IDataFormatter
 import com.scurab.dipho.home.HomeUiState
 import com.scurab.dipho.home.HomeViewModel
 import com.scurab.dipho.web.SharedComponents
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
+import org.koin.core.inject
 import react.RBuilder
 import react.RProps
 import react.RState
@@ -16,7 +18,6 @@ import react.child
 import react.dom.br
 import react.dom.div
 import react.dom.h4
-import react.dom.p
 import react.dom.span
 import react.functionalComponent
 import react.setState
@@ -28,6 +29,7 @@ class RHomeState(
 
 class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
 
+    private val dataFormatter by inject<IDataFormatter>()
     private val viewModel by viewModel<HomeViewModel>()
     private val threadClickHandler = { chatRoom: ChatRoom -> viewModel.onThreadClicked(chatRoom) }
 
@@ -102,9 +104,9 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
                 div {
                     attrs.classes = Classes.created
                     span {
-                        +"10/01/2021"
+                        +dataFormatter.toLongDate(item.created)
                         br { }
-                        +"20:12:35"
+                        +dataFormatter.toLongTime(item.created)
                     }
                 }
             }

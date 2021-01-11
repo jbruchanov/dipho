@@ -4,23 +4,21 @@ import com.scurab.dipho.common.js.arch.BaseRComponent
 import com.scurab.dipho.common.js.arch.viewModel
 import com.scurab.dipho.common.model.ChatItem
 import com.scurab.dipho.common.model.ChatItems
+import com.scurab.dipho.common.util.IDataFormatter
 import com.scurab.dipho.home.ThreadUiState
 import com.scurab.dipho.home.ThreadViewModel
 import com.scurab.dipho.web.SharedComponents
-import kotlinx.css.padding
-import kotlinx.css.px
 import kotlinx.html.classes
+import org.koin.core.inject
 import react.RBuilder
 import react.RProps
 import react.RState
 import react.child
 import react.dom.a
 import react.dom.div
-import react.dom.hr
 import react.dom.img
 import react.functionalComponent
 import react.setState
-import styled.css
 import styled.styledDiv
 
 external interface ThreadProps : RProps {
@@ -34,6 +32,7 @@ class RThreadState(
 
 class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadState>(props) {
 
+    private val dataFormatter by inject<IDataFormatter>()
     private val viewModel by viewModel<ThreadViewModel>()
 
     init {
@@ -69,20 +68,17 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
 
     private fun RBuilder.message(index: Int, chatItem: ChatItem) = functionalComponent<RProps>("Message") {
         styledDiv {
-            css {
-                padding(10.px)
-            }
-            attrs.classes = setOf("message-content", if (index % 2 == 0) "item-even" else "item-odd")
+            attrs.classes = if (index % 2 == 0) Css.messageContentEven else Css.messageContentOdd
             div {
-                attrs.classes = setOf("message-author")
-                +"Autor: ${chatItem.author.name}"
+                attrs.classes = Css.messageAuthor
+                +chatItem.author.name
             }
             div {
-                attrs.classes = setOf("message-date")
-                +chatItem.created.toString()
+                attrs.classes = Css.messageDate
+                +(dataFormatter.toLongTime(chatItem.created) + " " + (dataFormatter.toLongDate(chatItem.created)))
             }
             div {
-                attrs.classes = setOf("message-text")
+                attrs.classes = Css.messageText
                 +chatItem.text
             }
             if (chatItem.links.isNotEmpty()) {
@@ -102,5 +98,14 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
                 }
             }
         }
+    }
+
+    private object Css {
+        val messageContentOdd = setOf("message-content", "item-odd")
+        val messageContentEven = setOf("message-content", "item-even")
+        val messageAuthorDate = setOf("message-authordate")
+        val messageAuthor = setOf("message-author")
+        val messageDate = setOf("message-date")
+        val messageText = setOf("message-text")
     }
 }

@@ -19,7 +19,8 @@ data class ChatRoom(
     val id: String,
     val subject: String,
     val author: Author,
-    val messages: Int
+    val messages: Int,
+    val created: Long
 )
 
 @Serializable
