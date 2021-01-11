@@ -12,8 +12,10 @@ import react.RBuilder
 import react.RProps
 import react.RState
 import react.child
+import react.dom.br
 import react.dom.div
 import react.dom.h4
+import react.dom.p
 import react.functionalComponent
 import react.setState
 
@@ -28,6 +30,8 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
         state = RHomeState(emptyList())
     }
 
+    //TODO: pbar
+    //https://codepen.io/shalimano/pen/wBmNGJ
     override fun componentDidMount() {
         super.componentDidMount()
         with(viewModel) {
@@ -74,9 +78,42 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
         child(functionalComponent("Thread") {
             div {
                 attrs.onClickFunction = { clickHandler(item) }
-                attrs.classes = setOf("thread", if (index % 2 == 0) "thread-even" else "thread-odd")
-                div { +item.author.name }
-                div { +item.subject }
+                attrs.classes = if (index % 2 == 0) Classes.threadEven else Classes.threadOdd
+                div {
+                    attrs.classes = Classes.threadCol1
+                    div {
+                        attrs.classes = Classes.author
+                        +item.author.name
+                    }
+                    div {
+                        attrs.classes = Classes.subject
+                        +item.subject
+                    }
+                }
+                div {
+                    attrs.classes = Classes.msgCount
+                    p { +item.messages.toString() }
+                }
+                div {
+                    attrs.classes = Classes.created
+                    p {
+                        +"10/01/2021"
+                        br {  }
+                        +"20:12:35"
+                    }
+                }
             }
         })
+
+    companion object {
+        private object Classes {
+            val threadEven = setOf("thread", "item-even")
+            val threadOdd = setOf("thread", "item-odd")
+            val threadCol1 = setOf("thread-col1")
+            val author = setOf("author")
+            val subject = setOf("subject")
+            val msgCount = setOf("msg-count")
+            val created = setOf("created")
+        }
+    }
 }

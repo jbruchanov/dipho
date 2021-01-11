@@ -41,8 +41,8 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
             div {
                 +"Subject"
             }
-            state.chatItems.items.forEach {
-                child(message(it))
+            state.chatItems.items.forEachIndexed { index, chatItem ->
+                child(message(index, chatItem))
             }
         }
     }
@@ -60,28 +60,27 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
     }
 
 
-    private fun RBuilder.message(chatItem: ChatItem) = functionalComponent<RProps>("Message") {
+    private fun RBuilder.message(index:Int, chatItem: ChatItem) = functionalComponent<RProps>("Message") {
         styledDiv {
             css {
                 padding(10.px)
             }
-            attrs.classes = setOf("thread-content")
+            attrs.classes = setOf("message-content", if (index % 2 == 0) "item-even" else "item-odd")
             div {
-                attrs.classes = setOf("thread-author")
+                attrs.classes = setOf("message-author")
                 +"Autor: ${chatItem.author.name}"
             }
-            attrs.classes = setOf("thread-content")
             div {
-                attrs.classes = setOf("thread-author")
+                attrs.classes = setOf("message-date")
                 +chatItem.created.toString()
             }
             div {
-                attrs.classes = setOf("thread-text")
+                attrs.classes = setOf("message-text")
                 +chatItem.text
             }
             if (chatItem.links.isNotEmpty()) {
                 div {
-                    attrs.classes = setOf("thread-links")
+                    attrs.classes = setOf("message-links")
                     chatItem.links.forEach {
                         a { attrs.href = it }
                     }
@@ -89,13 +88,12 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
             }
             if (chatItem.images.isNotEmpty()) {
                 div {
-                    attrs.classes = setOf("thread-images")
+                    attrs.classes = setOf("message-images")
                     chatItem.images.forEach {
                         img { attrs.src = it }
                     }
                 }
             }
-            hr {  }
         }
     }
 }
