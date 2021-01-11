@@ -26,7 +26,11 @@ data class ChatRoom(
 data class ChatItems(
     val subject: String,
     val items: List<ChatItem>
-)
+) {
+    companion object {
+        val EMPTY = ChatItems("", emptyList())
+    }
+}
 
 @Serializable
 data class ChatItem(

@@ -6,6 +6,7 @@ import com.scurab.dipho.common.js.nav.bind
 import com.scurab.dipho.common.model.ChatRoom
 import com.scurab.dipho.home.HomeUiState
 import com.scurab.dipho.home.HomeViewModel
+import com.scurab.dipho.web.SharedComponents
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
@@ -20,7 +21,10 @@ import react.dom.span
 import react.functionalComponent
 import react.setState
 
-class RHomeState(override var items: List<ChatRoom>) : HomeUiState(items), RState
+class RHomeState(
+    override var isLoading: Boolean,
+    override var items: List<ChatRoom>
+) : HomeUiState(isLoading, items), RState
 
 class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
 
@@ -28,11 +32,9 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
     private val threadClickHandler = { chatRoom: ChatRoom -> viewModel.onThreadClicked(chatRoom) }
 
     init {
-        state = RHomeState(emptyList())
+        state = RHomeState(true, emptyList())
     }
 
-    //TODO: pbar
-    //https://codepen.io/shalimano/pen/wBmNGJ
     override fun componentDidMount() {
         super.componentDidMount()
         with(viewModel) {
@@ -40,6 +42,7 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
             uiState.observe {
                 logger.d("HomeComponent", "Update UI")
                 setState {
+                    isLoading = it.isLoading
                     items = it.items
                 }
             }
@@ -50,6 +53,7 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
     override fun RBuilder.render() {
         div {
             attrs.classes = setOf("screen")
+            child(SharedComponents.progressBar(state.isLoading))
             child(header)
             div {
                 attrs.classes = setOf("screen-content")
@@ -99,7 +103,7 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
                     attrs.classes = Classes.created
                     span {
                         +"10/01/2021"
-                        br {  }
+                        br { }
                         +"20:12:35"
                     }
                 }

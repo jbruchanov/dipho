@@ -6,6 +6,7 @@ import com.scurab.dipho.common.model.ChatItem
 import com.scurab.dipho.common.model.ChatItems
 import com.scurab.dipho.home.ThreadUiState
 import com.scurab.dipho.home.ThreadViewModel
+import com.scurab.dipho.web.SharedComponents
 import kotlinx.css.padding
 import kotlinx.css.px
 import kotlinx.html.classes
@@ -26,18 +27,23 @@ external interface ThreadProps : RProps {
     var threadId: String
 }
 
-class RThreadState(override var chatItems: ChatItems) : ThreadUiState(chatItems), RState
+class RThreadState(
+    override var isLoading: Boolean,
+    override var chatItems: ChatItems
+) : ThreadUiState(isLoading, chatItems), RState
 
 class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadState>(props) {
 
     private val viewModel by viewModel<ThreadViewModel>()
 
     init {
-        state = RThreadState(ChatItems("", emptyList()))
+        state = RThreadState(false, ChatItems.EMPTY)
     }
 
     override fun RBuilder.render() {
         div {
+            attrs.classes = setOf("screen")
+            child(SharedComponents.progressBar(state.isLoading))
             div {
                 +"Subject"
             }
@@ -52,6 +58,7 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
         with(viewModel) {
             uiState.observe {
                 setState {
+                    isLoading = it.isLoading
                     chatItems = it.chatItems
                 }
             }
@@ -60,7 +67,7 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
     }
 
 
-    private fun RBuilder.message(index:Int, chatItem: ChatItem) = functionalComponent<RProps>("Message") {
+    private fun RBuilder.message(index: Int, chatItem: ChatItem) = functionalComponent<RProps>("Message") {
         styledDiv {
             css {
                 padding(10.px)

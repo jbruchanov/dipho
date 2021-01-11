@@ -11,7 +11,7 @@
 
 
     --spacing-chatroom: 5pt;
-    --spacing-scrollbar-width: 3pt;
+    --spacing-indicators: 3pt;
 }
 
 body {
@@ -89,7 +89,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: var(--spacing-scrollbar-width);      /* width of the entire scrollbar */
+  width: var(--spacing-indicators);      /* width of the entire scrollbar */
 }
 
 ::-webkit-scrollbar-track {
@@ -100,4 +100,40 @@ body {
   background-color: var(--color-accent);    /* color of the scroll thumb */
   /*border-radius: 10px;*/       /* roundness of the scroll thumb */
   /*border: 3px solid var(--color-accent);  /* creates padding around scroll thumb */
+}
+
+
+.slider{
+  position: relative;
+  width:100vw;
+  height:var(--spacing-indicators);
+  overflow-x: hidden;
+}
+
+.slider-line{
+  position:absolute;
+  background:var(--color-background-odd);
+  width:150%;
+  height:var(--spacing-indicators);
+}
+
+.slider-subline{
+  position:absolute;
+  background:var(--color-accent);
+  height:var(--spacing-indicators);
+}
+.slider-inc{
+animation: increase 3s infinite;
+}
+.slider-dec{
+animation: decrease 3s 0.5s infinite;
+}
+
+@keyframes increase {
+ from { left: -5%; width: 5%; }
+ to { left: 130%; width: 100%;}
+}
+@keyframes decrease {
+ from { left: -80%; width: 80%; }
+ to { left: 110%; width: 10%;}
 }

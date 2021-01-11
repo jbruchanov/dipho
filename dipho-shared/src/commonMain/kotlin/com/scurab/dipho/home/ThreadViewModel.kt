@@ -10,7 +10,10 @@ import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-open class ThreadUiState(open val chatItems: ChatItems)
+open class ThreadUiState(
+    open val isLoading: Boolean,
+    open val chatItems: ChatItems
+)
 
 class ThreadViewModel : BaseCommonViewModel(), KoinComponent {
 
@@ -20,15 +23,20 @@ class ThreadViewModel : BaseCommonViewModel(), KoinComponent {
     private val api by inject<IServerApi>()
 
     fun loadData(threadId: String) {
+        _uiState.emitItem(ThreadUiState(true, uiState.item?.chatItems ?: ChatItems.EMPTY))
         viewModelScope.launch(dispatchers.io) {
-            loadItems(threadId)
+            try {
+                loadItems(threadId)
+            } catch (e: Exception) {
+                _uiState.emitItem(ThreadUiState(false, uiState.item?.chatItems ?: ChatItems.EMPTY))
+            }
         }
     }
 
     private suspend fun loadItems(threadId: String) {
         val chatItems = api.getMessages(threadId)
         withContext(dispatchers.main) {
-            _uiState.postItem(ThreadUiState(chatItems))
+            _uiState.postItem(ThreadUiState(false, chatItems))
         }
     }
 
