@@ -4,27 +4,30 @@
 
     --color-text-primary: #FFF;
     --color-text-secondary: #AAA;
+    --color-text-tertiary: #888;
     --color-background: #000;
     --color-background-even: var(--color-background);
     --color-background-odd:#222;
     --color-background-selected: #462300;
 
 
-    --spacing-chatroom: 5pt;
+    --spacing-general: 5pt;
     --spacing-indicators: 3pt;
+    --size-text-primary: 12pt;
 }
 
 body {
     background: var(--color-background);
     font-family:verdana;
     color:var(--color-accent);
+    font-size: var(--size-text-primary);
     margin:0px;
 }
 
 .thread {
   display: flex;
   flex-direction: row;
-    padding: var(--spacing-chatroom);
+    padding: var(--spacing-general);
     border: solid 1px rgba(0,0,0,0);
     cursor: pointer;
 }
@@ -40,7 +43,7 @@ body {
 }
 
 .subject {
-    margin-top: calc(var(--spacing-chatroom) / 1);
+    margin-top: calc(var(--spacing-general) / 1);
 }
 
 .item-even {
@@ -86,6 +89,22 @@ body {
     order: 4;
     text-align: center;
     margin:auto
+}
+
+.message-content {
+    padding:10pt;
+
+}
+
+.message-date {
+    top:0pt;
+    font-size:0.8em;
+    padding: var(--spacing-general) 0pt ;
+    color: var(--color-text-tertiary);
+}
+
+.message-text {
+    color: var(--color-text-secondary);
 }
 
 ::-webkit-scrollbar {
