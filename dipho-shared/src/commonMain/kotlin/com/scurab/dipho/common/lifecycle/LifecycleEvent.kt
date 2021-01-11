@@ -39,7 +39,7 @@ open class LifecycleObservable<T> protected constructor(
         setItem(item)
     }
 
-    protected open fun enqueueItem(item: T) {
+    protected open fun emitItem(item: T) {
         val mainThread = true
         if (mainThread) setItem(item) else postItem(item)
     }
@@ -144,7 +144,7 @@ open class MutableLifecycleObservable<T>(strategy: ILifecycleObserverStrategy<T>
 
     public override fun setItem(item: T) = super.setItem(item)
     public override fun postItem(item: T) = super.postItem(item)
-    public override fun enqueueItem(item: T) = super.enqueueItem(item)
+    public override fun emitItem(item: T) = super.emitItem(item)
 }
 
 fun <T> mutableLifecycleObservable() = MutableLifecycleObservable<T>(LifecycleObservable.Multicast())

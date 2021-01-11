@@ -37,6 +37,6 @@ class HomeViewModel : BaseCommonViewModel(), KoinComponent {
     }
 
     fun onThreadClicked(chatRoom: ChatRoom) {
-        _navigationToken.enqueueItem(NavigationToken.Thread(chatRoom.id))
+        _navigationToken.emitItem(NavigationToken.Thread(chatRoom.id))
     }
 }
