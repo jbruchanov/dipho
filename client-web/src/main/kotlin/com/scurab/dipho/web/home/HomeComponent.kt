@@ -24,8 +24,8 @@ import react.setState
 
 class RHomeState(
     override var isLoading: Boolean,
-    override var items: List<ChatRoom>
-) : HomeUiState(isLoading, items), RState
+    var items: Collection<ChatRoom>
+) : HomeUiState(isLoading), RState
 
 class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
 
@@ -41,10 +41,16 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
         super.componentDidMount()
         with(viewModel) {
             viewModel.navigationToken.bind(this@HomeComponent)
+            data.observe {
+                setState {
+                    items = it
+                    logger.d("HomeComponent", "items updated")
+                }
+            }
             uiState.observe {
                 setState {
-                    isLoading = it.isLoading
-                    items = it.items
+                    //isLoading = it.isLoading
+                    isLoading = false
                 }
             }
             loadItemsAsync()

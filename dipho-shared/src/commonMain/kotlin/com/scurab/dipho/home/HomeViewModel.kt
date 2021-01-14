@@ -6,7 +6,10 @@ import com.scurab.dipho.common.lifecycle.LifecycleObservable
 import com.scurab.dipho.common.lifecycle.mutableLifecycleObservable
 import com.scurab.dipho.common.lifecycle.navigationLifecycleObservable
 import com.scurab.dipho.common.model.ChatRoom
+import com.scurab.dipho.common.model.ChatRooms
 import com.scurab.dipho.common.nav.NavigationToken
+import com.scurab.dipho.common.repo.AppRepo
+import com.scurab.dipho.common.usecase.LoadDataUseCase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
@@ -14,35 +17,38 @@ import org.koin.core.inject
 
 open class HomeUiState(
     open val isLoading: Boolean,
-    open val items: List<ChatRoom>
 )
 
-class HomeViewModel : BaseCommonViewModel(), KoinComponent {
+class HomeViewModel(
+    private val repo: AppRepo,
+    private val loadDataUseCase: LoadDataUseCase
+) : BaseCommonViewModel(), KoinComponent {
 
-    private val _uiState = mutableLifecycleObservable(HomeUiState(true, emptyList()))
+    private val _uiState = mutableLifecycleObservable(HomeUiState(true))
     val uiState: LifecycleObservable<HomeUiState> = _uiState
     private val _navigationToken = navigationLifecycleObservable<NavigationToken>()
     val navigationToken: LifecycleObservable<NavigationToken> = _navigationToken
 
-    private val api by inject<IServerApi>()
+    private val _data = mutableLifecycleObservable<Collection<ChatRoom>>()
+    val data: LifecycleObservable<Collection<ChatRoom>> = _data
+
+    val api by inject<IServerApi>()
 
     fun loadItemsAsync() {
-        _uiState.emitItem(HomeUiState(true, _uiState.item?.items ?: emptyList()))
+        _uiState.emitItem(HomeUiState(true))
         viewModelScope.launch(dispatchers.io) {
             try {
                 loadItems()
             } catch (e: Exception) {
                 e.printStackTrace()
-                _uiState.emitItem(HomeUiState(false, _uiState.item?.items ?: emptyList()))
+                _uiState.emitItem(HomeUiState(false))
             }
         }
     }
 
     private suspend fun loadItems() {
-        val data = api.getChatRooms()
-        withContext(dispatchers.main) {
-            _uiState.postItem(HomeUiState(false, data.items))
-        }
+        _data.emitItem(repo.getChatRooms().values)
+        _data.emitItem(loadDataUseCase.loadChatRooms().items)
     }
 
     fun onThreadClicked(chatRoom: ChatRoom) {
