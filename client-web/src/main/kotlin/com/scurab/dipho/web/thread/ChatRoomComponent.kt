@@ -31,10 +31,10 @@ external interface ThreadProps : RProps {
 
 class RThreadState(
     override var isLoading: Boolean,
-    override var chatItems: ChatItems,
-    override val showLinksExtra: Boolean
+    override val showLinksExtra: Boolean,
+    var chatItems: ChatItems
 
-) : ThreadUiState(isLoading, chatItems, showLinksExtra), RState
+) : ThreadUiState(isLoading, showLinksExtra), RState
 
 class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadState>(props) {
 
@@ -42,7 +42,7 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
     private val viewModel by viewModel<ThreadViewModel>()
 
     init {
-        state = RThreadState(false, ChatItems.EMPTY, false)
+        state = RThreadState(isLoading = false, showLinksExtra = false, chatItems = ChatItems.EMPTY)
     }
 
     override fun RBuilder.render() {
@@ -64,10 +64,14 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
     override fun componentDidMount() {
         super.componentDidMount()
         with(viewModel) {
+            data.observe {
+                setState {
+                    chatItems = it
+                }
+            }
             uiState.observe {
                 setState {
                     isLoading = it.isLoading
-                    chatItems = it.chatItems
                 }
             }
         }

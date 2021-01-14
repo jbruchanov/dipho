@@ -16,7 +16,7 @@ object CommonModule {
         single { AppRepo() }
 
         factory { HomeViewModel(get(), get()) }
-        factory { ThreadViewModel() }
+        factory { ThreadViewModel(get(), get()) }
         factory { LoadDataUseCase(get(), get()) }
     }
 }
