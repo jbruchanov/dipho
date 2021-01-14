@@ -1,7 +1,9 @@
 package com.scurab.dipho.common.js.di
 
+import com.scurab.dipho.common.IPlatform
 import com.scurab.dipho.common.core.ILogger
 import com.scurab.dipho.common.coroutines.IDispatchers
+import com.scurab.dipho.common.js.JsPlatform
 import com.scurab.dipho.common.js.core.JsLogger
 import com.scurab.dipho.common.js.coroutines.JsDispatchers
 import com.scurab.dipho.common.js.nav.JsNavigator
@@ -22,6 +24,7 @@ object JsModule {
         single<IDispatchers> { JsDispatchers() }
         single<INavigator> { JsNavigator(get()) }
         single<IDataFormatter> { JsDataFormatter() }
+        single<IPlatform> { JsPlatform() }
         single {
             HttpClient(Js) {
                 install(JsonFeature) {
