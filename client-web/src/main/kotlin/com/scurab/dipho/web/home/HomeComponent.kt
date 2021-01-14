@@ -42,7 +42,6 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
         with(viewModel) {
             viewModel.navigationToken.bind(this@HomeComponent)
             uiState.observe {
-                logger.d("HomeComponent", "Update UI")
                 setState {
                     isLoading = it.isLoading
                     items = it.items
