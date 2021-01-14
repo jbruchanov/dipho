@@ -1,5 +1,6 @@
 :root {
     --color-accent: #FF8000;
+    --color-accent-secondary: #A65700;
     --color-accent-selected: #FF8000;
 
     --color-text-primary: #FFF;
@@ -22,6 +23,17 @@ body {
     color:var(--color-accent);
     font-size: var(--size-text-primary);
     margin:0px;
+}
+a {
+    font-family: consolas;
+    font-size:1em;
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+a:visited {
+    color: var(--color-accent-secondary);
+    text-decoration: none;
 }
 
 .thread {
