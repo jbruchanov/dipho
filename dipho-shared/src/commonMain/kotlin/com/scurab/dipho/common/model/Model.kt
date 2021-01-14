@@ -3,19 +3,19 @@ package com.scurab.dipho.common.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Author(
+class Author(
     val id: String,
     val name: String
 )
 
 @Serializable
-data class ChatRooms(
+class ChatRooms(
     val nextPageId: String,
     val items: List<ChatRoom>
 )
 
 @Serializable
-data class ChatRoom(
+class ChatRoom(
     val id: String,
     val subject: String,
     val author: Author,
@@ -24,17 +24,18 @@ data class ChatRoom(
 )
 
 @Serializable
-data class ChatItems(
+class ChatItems(
+    val roomId: String,
     val subject: String,
     val items: List<ChatItem>
 ) {
     companion object {
-        val EMPTY = ChatItems("", emptyList())
+        val EMPTY = ChatItems("", "", emptyList())
     }
 }
 
 @Serializable
-data class ChatItem(
+class ChatItem(
     val author: Author,
     val text: String,
     val created: Long,
