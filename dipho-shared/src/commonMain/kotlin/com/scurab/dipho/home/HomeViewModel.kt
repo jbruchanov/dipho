@@ -25,7 +25,7 @@ class HomeViewModel(
     private val _navigationToken = navigationLifecycleObservable<NavigationToken>()
     val navigationToken: LifecycleObservable<NavigationToken> = _navigationToken
 
-    private val _data = mutableLifecycleObservable<Collection<ChatRoom>>()
+    private val _data = mutableLifecycleObservable<Collection<ChatRoom>>(emptyList())
     val data: LifecycleObservable<Collection<ChatRoom>> = _data
 
     fun loadItemsAsync() {

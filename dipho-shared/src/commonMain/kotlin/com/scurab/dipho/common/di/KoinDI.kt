@@ -6,7 +6,7 @@ import com.scurab.dipho.common.api.ServerApi
 import com.scurab.dipho.common.repo.AppRepo
 import com.scurab.dipho.common.usecase.LoadDataUseCase
 import com.scurab.dipho.home.HomeViewModel
-import com.scurab.dipho.home.ThreadViewModel
+import com.scurab.dipho.home.ChatRoomViewModel
 import org.koin.dsl.module
 
 object CommonModule {
@@ -16,7 +16,7 @@ object CommonModule {
         single { AppRepo() }
 
         factory { HomeViewModel(get(), get()) }
-        factory { ThreadViewModel(get(), get()) }
+        factory { ChatRoomViewModel(get(), get()) }
         factory { LoadDataUseCase(get(), get()) }
     }
 }

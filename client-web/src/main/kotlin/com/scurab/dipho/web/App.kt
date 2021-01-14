@@ -3,7 +3,7 @@ package com.scurab.dipho.web
 import com.scurab.dipho.common.js.nav.Links
 import com.scurab.dipho.web.home.HomeComponent
 import com.scurab.dipho.web.thread.ThreadComponent
-import com.scurab.dipho.web.thread.ThreadProps
+import com.scurab.dipho.web.thread.ChatRoomProps
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import react.RBuilder
@@ -24,10 +24,10 @@ class App : RComponent<RProps, RState>(), KoinComponent {
         hashRouter { // or "browserRouter"
             switch {
                 route(links.root(), HomeComponent::class, exact = true)
-                route<ThreadProps>(links.thread(":threadId")) { params ->
+                route<ChatRoomProps>(links.thread(":chatRoomId")) { params ->
                     child(ThreadComponent::class) {
                         attrs {
-                            threadId = params.match.params.threadId
+                            chatRoomId = params.match.params.chatRoomId
                         }
                     }
                 }

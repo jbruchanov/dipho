@@ -23,7 +23,7 @@ fun LifecycleObservable<NavigationToken>.bind(lifecycleOwner: ILifecycleOwner, n
         when (it) {
             NavigationToken.Back -> navigator.back()
             NavigationToken.Root -> navigator.home()
-            is NavigationToken.ChatRoom -> navigator.thread(it.threadId)
+            is NavigationToken.ChatRoom -> navigator.thread(it.chatRoomId)
         }
     }
 }

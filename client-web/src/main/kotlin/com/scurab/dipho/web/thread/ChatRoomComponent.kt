@@ -6,8 +6,8 @@ import com.scurab.dipho.common.model.ChatItem
 import com.scurab.dipho.common.model.ChatItems
 import com.scurab.dipho.common.util.IDataFormatter
 import com.scurab.dipho.common.util.StringTokenizer
-import com.scurab.dipho.home.ThreadUiState
-import com.scurab.dipho.home.ThreadViewModel
+import com.scurab.dipho.home.ChatRoomUiState
+import com.scurab.dipho.home.ChatRoomViewModel
 import com.scurab.dipho.web.SharedComponents
 import com.scurab.dipho.web.ext.aTab
 import kotlinx.css.maxWidth
@@ -25,24 +25,24 @@ import react.setState
 import styled.css
 import styled.styledImg
 
-external interface ThreadProps : RProps {
-    var threadId: String
+external interface ChatRoomProps : RProps {
+    var chatRoomId: String
 }
 
-class RThreadState(
+class RChatRoomState(
     override var isLoading: Boolean,
     override val showLinksExtra: Boolean,
     var chatItems: ChatItems
 
-) : ThreadUiState(isLoading, showLinksExtra), RState
+) : ChatRoomUiState(isLoading, showLinksExtra), RState
 
-class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadState>(props) {
+class ThreadComponent(props: ChatRoomProps) : BaseRComponent<ChatRoomProps, RChatRoomState>(props) {
 
     private val dataFormatter by inject<IDataFormatter>()
-    private val viewModel by viewModel<ThreadViewModel>()
+    private val viewModel by viewModel<ChatRoomViewModel>()
 
     init {
-        state = RThreadState(isLoading = false, showLinksExtra = false, chatItems = ChatItems.EMPTY)
+        state = RChatRoomState(isLoading = false, showLinksExtra = false, chatItems = ChatItems.EMPTY)
     }
 
     override fun RBuilder.render() {
@@ -75,7 +75,7 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
                 }
             }
         }
-        viewModel.loadData(props.threadId)
+        viewModel.loadData(props.chatRoomId)
     }
 
 
