@@ -49,8 +49,7 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
             }
             uiState.observe {
                 setState {
-                    //isLoading = it.isLoading
-                    isLoading = false
+                    isLoading = it.isLoading
                 }
             }
             loadItemsAsync()
