@@ -52,12 +52,10 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
     }
 
     override fun RBuilder.render() {
-        div {
-            attrs.classes = setOf("screen")
+        div("screen") {
             child(SharedComponents.progressBar(state.isLoading))
             child(header)
-            div {
-                attrs.classes = setOf("screen-content")
+            div("screen-content") {
                 state.items.forEachIndexed { index, thread ->
                     thread(index, thread, threadClickHandler)
                 }
@@ -67,16 +65,14 @@ class HomeComponent(props: RProps) : BaseRComponent<RProps, RHomeState>(props) {
     }
 
     private val header = functionalComponent<RProps> {
-        div {
-            attrs.classes = setOf("home-header", "screen-header")
-            h4 { +"Header" }
+        div("home-header screen-header") {
+            h4 { +"Žumπčka" }
         }
     }
 
     private val footer = functionalComponent<RProps> {
-        div {
-            attrs.classes = setOf("home-footer", "screen-footer")
-            h4 { +"Footer" }
+        div("home-footer screen-footer") {
+
         }
     }
 

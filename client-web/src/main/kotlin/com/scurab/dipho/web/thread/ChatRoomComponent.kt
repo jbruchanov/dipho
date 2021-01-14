@@ -19,6 +19,7 @@ import react.RState
 import react.child
 import react.dom.br
 import react.dom.div
+import react.dom.h4
 import react.functionalComponent
 import react.setState
 import styled.css
@@ -45,13 +46,17 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
     }
 
     override fun RBuilder.render() {
-        div(classes = "screen") {
+        div("screen") {
             child(SharedComponents.progressBar(state.isLoading))
-            div {
-                +"Subject"
+            div("screen-header") {
+                h4 {
+                    +state.chatItems.subject
+                }
             }
-            state.chatItems.items.forEachIndexed { index, chatItem ->
-                child(message(index, chatItem))
+            div("screen-content") {
+                state.chatItems.items.forEachIndexed { index, chatItem ->
+                    child(message(index, chatItem))
+                }
             }
         }
     }
