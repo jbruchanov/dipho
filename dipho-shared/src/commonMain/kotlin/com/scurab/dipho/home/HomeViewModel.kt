@@ -5,7 +5,6 @@ import com.scurab.dipho.common.arch.BaseCommonViewModel
 import com.scurab.dipho.common.lifecycle.LifecycleObservable
 import com.scurab.dipho.common.lifecycle.mutableLifecycleObservable
 import com.scurab.dipho.common.lifecycle.navigationLifecycleObservable
-import com.scurab.dipho.common.model.ChatItems
 import com.scurab.dipho.common.model.ChatRoom
 import com.scurab.dipho.common.nav.NavigationToken
 import kotlinx.coroutines.launch
@@ -47,6 +46,6 @@ class HomeViewModel : BaseCommonViewModel(), KoinComponent {
     }
 
     fun onThreadClicked(chatRoom: ChatRoom) {
-        _navigationToken.emitItem(NavigationToken.Thread(chatRoom.id))
+        _navigationToken.emitItem(NavigationToken.ChatRoom(chatRoom.subject, chatRoom.id))
     }
 }

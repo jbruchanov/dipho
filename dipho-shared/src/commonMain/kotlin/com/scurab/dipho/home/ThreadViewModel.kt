@@ -1,7 +1,9 @@
 package com.scurab.dipho.home
 
+import com.scurab.dipho.common.IPlatform
 import com.scurab.dipho.common.api.IServerApi
 import com.scurab.dipho.common.arch.BaseCommonViewModel
+import com.scurab.dipho.common.ext.showLinksAsButtons
 import com.scurab.dipho.common.lifecycle.LifecycleObservable
 import com.scurab.dipho.common.lifecycle.mutableLifecycleObservable
 import com.scurab.dipho.common.model.ChatItems
@@ -12,7 +14,8 @@ import org.koin.core.inject
 
 open class ThreadUiState(
     open val isLoading: Boolean,
-    open val chatItems: ChatItems
+    open val chatItems: ChatItems,
+    open val showLinksExtra: Boolean
 )
 
 class ThreadViewModel : BaseCommonViewModel(), KoinComponent {
@@ -21,15 +24,18 @@ class ThreadViewModel : BaseCommonViewModel(), KoinComponent {
     val uiState: LifecycleObservable<ThreadUiState> = _uiState
 
     private val api by inject<IServerApi>()
+    private val platform by inject<IPlatform>()
 
     fun loadData(threadId: String) {
-        _uiState.emitItem(ThreadUiState(true, uiState.item?.chatItems ?: ChatItems.EMPTY))
+        _uiState.emitItem(uiState(uiState.item?.chatItems, true))
         viewModelScope.launch(dispatchers.io) {
             try {
                 loadItems(threadId)
             } catch (e: Exception) {
                 e.printStackTrace()
-                _uiState.emitItem(ThreadUiState(false, uiState.item?.chatItems ?: ChatItems.EMPTY))
+                _uiState.emitItem(
+                    uiState(uiState.item?.chatItems)
+                )
             }
         }
     }
@@ -37,26 +43,10 @@ class ThreadViewModel : BaseCommonViewModel(), KoinComponent {
     private suspend fun loadItems(threadId: String) {
         val chatItems = api.getMessages(threadId)
         withContext(dispatchers.main) {
-            _uiState.postItem(ThreadUiState(false, chatItems))
+            _uiState.postItem(uiState(chatItems))
         }
     }
 
-    private val links = listOf(
-        emptyList(),
-        listOf("https://www.google.com"),
-        listOf(
-            "https://www.youtube.com/watch?v=bydj3ypCLcE&ab_channel=ShepardGaming",
-            "https://www.youtube.com/watch?v=IddU0V0J9BY&ab_channel=WowSuchGaming"
-        )
-    )
-
-    private val images = listOf(
-        listOf(
-            "https://images.apina.biz/full/77780.jpg",
-            "https://images.apina.biz/full/160694.png",
-            "https://media.giphy.com/media/OoId38go2peTu/giphy.gif"
-        ),
-        emptyList(),
-        listOf("https://images.apina.biz/full/178191.png")
-    )
+    private fun uiState(chatItems: ChatItems?, isLoading: Boolean = false) =
+        ThreadUiState(isLoading, chatItems ?: ChatItems.EMPTY, platform.showLinksAsButtons)
 }

@@ -30,8 +30,10 @@ external interface ThreadProps : RProps {
 
 class RThreadState(
     override var isLoading: Boolean,
-    override var chatItems: ChatItems
-) : ThreadUiState(isLoading, chatItems), RState
+    override var chatItems: ChatItems,
+    override val showLinksExtra: Boolean
+
+) : ThreadUiState(isLoading, chatItems, showLinksExtra), RState
 
 class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadState>(props) {
 
@@ -39,7 +41,7 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
     private val viewModel by viewModel<ThreadViewModel>()
 
     init {
-        state = RThreadState(false, ChatItems.EMPTY)
+        state = RThreadState(false, ChatItems.EMPTY, false)
     }
 
     override fun RBuilder.render() {
@@ -68,7 +70,7 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
     }
 
 
-    private fun RBuilder.message(index: Int, chatItem: ChatItem) = functionalComponent<RProps>("Message") {
+    private fun message(index: Int, chatItem: ChatItem) = functionalComponent<RProps>("Message") {
         div(if (index % 2 == 0) Css.messageContentEven else Css.messageContentOdd) {
             div(Css.messageAuthor) {
                 +chatItem.author.name
@@ -79,34 +81,33 @@ class ThreadComponent(props: ThreadProps) : BaseRComponent<ThreadProps, RThreadS
             div(Css.messageText) {
                 processChatItem(chatItem)
             }
-
-            val images = chatItem.links.filter {
-                it.endsWith(".png") || it.endsWith(".jpg") || it.endsWith(".jpeg") || it.endsWith(".gif")
-            }
-
-            return@div
-
-            val links = chatItem.links - images
-            if (links.isNotEmpty()) {
-                div(Css.messageLinks) {
-                    chatItem.links.forEach {
-                        div {
-                            aTab(it) {
-                                +it
+            //TODO: extract into components
+            if (state.showLinksExtra) {
+                val images = chatItem.links.filter {
+                    it.endsWith(".png") || it.endsWith(".jpg") || it.endsWith(".jpeg") || it.endsWith(".gif")
+                }
+                val links = chatItem.links - images
+                if (links.isNotEmpty()) {
+                    div(Css.messageLinks) {
+                        chatItem.links.forEach {
+                            div {
+                                aTab(it) {
+                                    +it
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            if (images.isNotEmpty()) {
-                div(Css.messageImages) {
-                    images.forEach {
-                        div {
-                            aTab(it) {
-                                styledImg {
-                                    css { maxWidth = 300.px }
-                                    attrs.src = it
+                if (images.isNotEmpty()) {
+                    div(Css.messageImages) {
+                        images.forEach {
+                            div {
+                                aTab(it) {
+                                    styledImg {
+                                        css { maxWidth = 300.px }
+                                        attrs.src = it
+                                    }
                                 }
                             }
                         }
