@@ -9,6 +9,6 @@ interface IPlatform {
     }
 
     enum class Platform {
-        Js, Android, Ios
+        Js, Android, Ios, Windows, Linux
     }
 }
