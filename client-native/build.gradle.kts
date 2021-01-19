@@ -19,18 +19,30 @@ kotlin {
         else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
     }
 
+    val mingwPath = File(System.getenv("MINGW64_DIR") ?: "c:/Utils/Windozy/msys64/mingw64")
     nativeTarget.apply {
         binaries {
             executable {
                 entryPoint = "main"
+                if (isMingwX64) {
+                    /*
+                         this needs to have installed https://www.msys2.org/
+                         and in the msys2 terminal install `mingw-w64-x86_64-curl`
+                         pacman -S mingw-w64-x86_64-curl
+                     */
+                    // Add lib path to `libcurl` and its dependencies:
+                    linkerOpts("-L${mingwPath.resolve("lib")}")
+                    runTask?.environment("PATH" to mingwPath.resolve("bin"))
+                }
+                runTask?.args("https://www.je   tbrains.com/")
             }
         }
     }
+
     sourceSets {
         val nativeMain by getting {
             dependencies {
                 implementation(project(":dipho-shared"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}-native-mt")
                 implementation("org.koin:koin-core:${Versions.koin}")
                 implementation("io.ktor:ktor-client-core:${Versions.ktor}")
                 implementation("io.ktor:ktor-client-serialization:${Versions.ktor}")

@@ -1,23 +1,20 @@
 import com.scurab.dipho.common.IPlatform
+import com.scurab.dipho.common.api.ApiConfig
+import com.scurab.dipho.common.api.ServerApi
 import com.scurab.dipho.common.core.ILogger
 import com.scurab.dipho.common.core.KtLogger
 import com.scurab.dipho.common.coroutines.IDispatchers
-import com.scurab.dipho.common.di.CommonModule
-import com.scurab.dipho.common.model.ChatRooms
+import com.scurab.dipho.common.repo.AppRepo
 import com.scurab.dipho.common.usecase.LoadDataUseCase
 import com.scurab.dipho.common.util.IDataFormatter
-import com.scurab.dipho.home.HomeViewModel
 import com.scurab.dipho.nav.INavigator
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.curl.Curl
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainCoroutineDispatcher
-import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
-import org.koin.core.context.KoinContextHandler
-import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import kotlin.coroutines.CoroutineContext
 
@@ -28,29 +25,29 @@ object NativeModule {
         single<INavigator> { NativeNavigator() }
         single<IDataFormatter> { DataFormatter() }
         single<IPlatform> { Platform() }
-//        single {
-//            HttpClient(Curl) {
-//                install(JsonFeature) {
-//                    serializer = KotlinxSerializer()
-//                }
-//            }
-//        }
+        single {
+            HttpClient(Curl) {
+                install(JsonFeature) {
+                    serializer = KotlinxSerializer()
+                }
+            }
+        }
     }
 }
 
 fun main() {
-    val koin = startKoin {
-        modules(CommonModule.koinModule)
-        modules(NativeModule.koinModule)
+    //koin doesn't seem to be working atm with native
+    val http = HttpClient(Curl) {
+        install(JsonFeature) {
+            serializer = KotlinxSerializer()
+        }
     }
-
-    val loadDataUseCase = KoinContextHandler.get().get<LoadDataUseCase>()
-    val logger = KoinContextHandler.get().get<ILogger>()
-
+    val loadDataUseCase = LoadDataUseCase(ServerApi(ApiConfig(url = "http://127.0.0.1:8088/api"), http), AppRepo())
+    val logger = KtLogger()
     runBlocking {
         val loadChatRooms = loadDataUseCase.loadChatRooms()
         loadChatRooms.items.forEach {
-            logger.d("I", it.toString())
+            logger.d("I", "[${it.author.name}] ${it.subject}")
         }
     }
 }
@@ -58,7 +55,7 @@ fun main() {
 class NativeDispatchers : IDispatchers {
     override val main: MainCoroutineDispatcher = Dispatchers.Main
     override val io: CoroutineContext = Dispatchers.Unconfined
-    override val cpu: CoroutineContext = newSingleThreadContext("CPU")
+    override val cpu: CoroutineContext = Dispatchers.Default
 }
 
 class NativeNavigator : INavigator {

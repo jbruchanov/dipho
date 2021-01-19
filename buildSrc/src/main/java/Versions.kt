@@ -1,11 +1,12 @@
 object Versions {
     const val kotlin = "1.4.21"
-    const val kotlinCoroutines = "1.4.2"
+    const val kotlinCoroutines = "1.4.2-native-mt"
     const val kotlinSerialisation = "1.0.1"
     const val ktor = "1.5.0"
 
     const val reactJs = "17.0.0-pre.134-kotlin-${kotlin}"
-    const val koin = "3.0.0-alpha-4"
+    //locally build koin due to missing mingwx64 version
+    const val koin = "3.0.0-alpha-4-SNAPSHOT"
 
     const val androidAppCompat = "1.2.0"
     const val androidLifecycle = "2.2.0"
