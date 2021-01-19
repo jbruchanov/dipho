@@ -6,9 +6,11 @@ object Versions {
 
     const val reactJs = "17.0.0-pre.134-kotlin-${kotlin}"
     //locally build koin due to missing mingwx64 version
-    const val koin = "3.0.0-alpha-4-SNAPSHOT"
+    val koin = "3.0.0-alpha-4" + ("-SNAPSHOT".takeIf { isWin() } ?: "")
 
     const val androidAppCompat = "1.2.0"
     const val androidLifecycle = "2.2.0"
     const val androidFragment = "1.2.5"
+
+    fun isWin() = System.getProperty("os.name")?.startsWith("Windows") ?: false
 }

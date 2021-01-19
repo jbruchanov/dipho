@@ -34,7 +34,7 @@ kotlin {
                     linkerOpts("-L${mingwPath.resolve("lib")}")
                     runTask?.environment("PATH" to mingwPath.resolve("bin"))
                 }
-                runTask?.args("https://www.je   tbrains.com/")
+                runTask?.args("https://www.jetbrains.com/")
             }
         }
     }
